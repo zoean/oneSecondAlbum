@@ -1,0 +1,8 @@
+<view class="nav-wrap" 
+style='padding-top:{{paddingTop}}px;height:{{height}}px;line-height:{{height}}px;position:{{fixed}}'>
+  <view class='return-btn' wx:if='{{back}}' bindtap='{{isedit == 0 ? "navigateBack" : "emit"}}'
+   style='height:{{height}}px; line-height:{{height}}px;'>
+    <image src='/images/navback.png'></image>
+  </view>
+  <text>{{title}}</text>
+</view>

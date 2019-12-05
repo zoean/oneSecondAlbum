@@ -1,0 +1,173 @@
+<!--在wxml文件中调用js方法  -->
+<wxs module="timeFn" src="../../utils/timestampToTime.wxs"></wxs>
+
+<view style='width:100%;height:100%;' catchtouchmove>
+  <nav-bar title='{{navData.title}}' back='{{navData.back}}' isedit='{{navData.isedit}}' bind:myevent='isSave'></nav-bar>
+  <view style='height:{{barHeight + 44}}px;width:100%;'></view>
+  <!-- 相册添加描述 -->
+  <view class="edit-input-wrap" style='top:{{barHeight + 44}}px;'>
+    <!-- <form  bindsubmit="bindFormSubmit"> -->
+			<view class='replace-text' wx:if='{{textareaShow}}' >
+				<textarea 
+					id='title-area' value='{{reload ? "" : photoTitle}}' 
+					bindinput='bindinput' maxlength='500' placeholder='{{reload ? "" : "给照片写一点描述吧..."}}'>
+      	</textarea>
+			</view>
+      <view class='replace-text' wx:if='{{!textareaShow}}'>
+				<rich-text nodes='{{photoTitle}}'></rich-text>
+      </view>
+    <!-- </form> -->
+  </view>
+
+  <!-- 图片展示区域 -->
+  <!-- <view class='show-pic-wrap' style='top:{{barHeight + 188}}px;'>
+    <scroll-view scroll-y='true'>
+      <view 
+        wx:for="{{picArr}}" wx:for-item="item" wx:for-index="index" wx:key="key"
+        style='left:{{index==current?move_x:item.left}}rpx;top:{{index==current?move_y:item.top}}rpx'
+        catchtouchmove="move"  bindtouchend="moveend" bindtouchstart="movestart"
+        class='show-pic-item {{moveTrue == true ? "viewmove" : ""}}' data-state='{{item.state}}' data-index='{{index}}'>
+        <image src='{{item.url}}'></image>
+        <image catchtap='removePic' data-index='{{index}}' class='remove-pic-btn' src='../../images/remove-pic.png'></image>
+        <view wx:if='{{index == 0}}' class='first-img'>封面</view>
+        <view class='failMask' wx:if='{{item.state == "fail"}}'>
+          <view class='reupload' data-index='{{index}}' data-url='{{item.url}}' bindtap='reuploadpic'>重新上传</view>
+        </view>
+      </view>
+      <view
+        style='top:{{(column * 212) + s_h}}rpx;left:{{row * 212 + s_h}}rpx;'
+        class='add-pic-btn' bindtap='addPic' wx:if='{{arrLength < 100}}'>
+        <image src='../../images/add-pic.png'></image>
+      </view>
+      <view 
+        style='position:absolute;top:{{(column + 1) * 220}}rpx;'
+        class='add-pic-text'>
+        已上传<text>{{arrLength}}</text>张图片，最多上传{{100-arrLength}}张图片
+      </view>
+    </scroll-view>
+  </view> -->
+
+  <!-- 图片展示区域 -->
+  <view class='show-pic-wrap' style='top:{{barHeight + 188}}px;'>
+    <scroll-view scroll-y='true'>
+      <view style='overflow:hidden;height:auto;padding-left:48rpx;'>
+        <view 
+          wx:for="{{picArr}}" wx:for-item="item" wx:for-index="index" wx:key="key"
+          class='show-pic-item {{moveTrue == true ? "viewmove" : ""}}' data-state='{{item.state}}' data-index='{{index}}'>
+          <image src='{{item.url}}' wx:if='{{picArr.length > 0}}'></image>
+          <image wx:if='{{picArr.length != 1}}' catchtap='removePic' data-index='{{index}}' class='remove-pic-btn' src='../../images/remove-pic.png' data-state='{{item.state}}'></image>
+          <view wx:if='{{index == 0}}' class='first-img'>封面</view>
+          <view class='failMask' wx:if='{{item.state == "fail"}}'>
+            <view class='reupload' data-index='{{index}}' data-url='{{item.url}}' bindtap='reuploadpic'>重新上传</view>
+          </view>
+        </view>
+        <view
+          class='add-pic-btn' bindtap='addPic' wx:if='{{arrLength < 30}}'>
+          <image src='../../images/add-pic.png'></image>
+        </view>
+      </view>
+      <view class='add-pic-text'>
+        已成功上传<text>{{successLoad}}</text>张图片，最多上传{{30}}张图片
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 底部任务栏 -->
+  <view class='bottom-btn-wrap {{isIphonex ? "setIphonexStyle" : ""}}' >
+    <view class='choose-moudle' bindtap='chooseMoudle'>
+      <image src='../../images/moudle.png'></image>
+      <view class='bottom-btn-name'>模板</view>
+      <image wx:if='{{selectTempIndex != 9999}}' class='btn-select' src='../../images/select.png'></image>
+    </view>
+    <view class='choose-moudle' bindtap='chooseMusic'>
+      <image src='../../images/music.png'></image>
+      <view class='bottom-btn-name'>音乐</view>
+      <image wx:if='{{selectSongIndex != 9999}}' class='btn-select' src='../../images/select.png'></image>
+    </view>
+    <view class='save-photo' bindtap='savePhoto' data-type='1'>保存</view>
+  </view>
+
+  <!-- 底部蒙板 -->
+  <view class='list-shadow {{templistShow == true ? "shadow-show" : "shadow-hide"}}' catchtap='closelist'></view>
+
+  <!-- 模板选择列表 -->
+  <view class='templist-wrap {{choosetemp == true ? "chooseTemp-show" : "chooseTemp-hide"}}'>
+    <view class='close-temp' bindtap='closetemplist'><image src='../../images/close-box.png'></image></view>
+    <view class='temp-scroll-wrap'>
+      <view class='temp-scroll-title'>选择模板</view>
+      <scroll-view scroll-y='true'>
+        <!--接口模板  -->
+        <view wx:for="{{templateArr}}" wx:for-item="item" wx:for-index="index" wx:key="key" 
+        class='item-wrap'>
+          <view data-index='{{item.id}}' class='photo-bg {{item.id == selectTempIndex ? "selectTemp" : ""}}' 
+          bindtap='selectTemp' style='background:url("{{item.picUrl}}") no-repeat center;background-size:100% 99%;'>
+            <view class='tempType {{item.id == 9999 ? "typeHide" : ""}}'>{{item.templateType == 0 ? "静" : "动"}}</view>
+          </view>
+          <view class='photo-name'>{{item.templateName}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 音乐选择列表 -->
+  <view class='songlist-wrap {{choosesong == true ? "chooseSong-show" : "chooseSong-hide"}}'>
+    <view class='close-temp' bindtap='closesonglist'><image src='../../images/close-box.png'></image></view>
+    <view class='temp-scroll-wrap'>
+      <view class='temp-scroll-title'>选择音乐</view>
+        <scroll-view scroll-y='true'>
+          <view class='nomusic {{selectSongIndex == 9999 ? "selectSong" : ""}}' data-index='9999' 
+          bindtap='selectSong'>
+            <view class='nomusic-text'>无音乐</view>
+          </view>
+          <view wx:for="{{songlistArr}}" wx:for-item="item" wx:for-index="index" wx:key="key" bindtap='selectSong'
+          class='item-wrap-music {{selectSongIndex == item.id ? "selectSong" : ""}}' 
+          data-songurl='{{item.songUrl}}' data-index='{{item.id}}'>
+            <view class='song-name'>{{timeFn.getMusicName(item.songName,1)}}</view>
+            <view class='singer-name'>{{timeFn.getMusicName(item.songName,0)}}</view>
+          </view>
+        </scroll-view>
+    </view>
+  </view>
+
+  <!-- 上传图片时显示的透明蒙版及上传进度框 -->
+  <view class='mask' wx:if='{{maskShow}}'>
+    <view class='loading-box'>
+      <view wx:if='{{!iscomplete}}'>
+        <image class='loading-pic' src='../../images/loading.png'></image>
+        <view >正在上传 {{loadComplete}}/{{loadingPicLoacl}}</view>
+      </view>
+      <view wx:else>
+        <image class='complete-pic' src='../../images/loadComplete.png'></image>
+        <view>上传完成</view>
+        <view wx:if='{{loadFiled != 0}}' class='loadFailed'>失败 {{loadFiled}} 张</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 保存相册时的透明蒙版及上传进度框 -->
+  <view class='mask' wx:if='{{saveMaskShow}}'>
+    <view class='loading-box'>
+      <image class='loading-pic' src='../../images/loading.png'></image>
+      <view>正在保存</view>
+    </view>
+  </view>
+
+  <!-- 加载不成功显示界面 -->
+  <view wx:if='{{reload}}' class='page-wrap'>
+    <view class='img-wrap'>
+      <image src='../../images/reload.png'></image>
+    </view>
+    <view class='text'>网络不给力，点击重新加载~</view>
+    <button class='load-btn' bindtap='reloadpage'>刷新试试</button>
+  </view>
+  <!-- 网络连接断开时弹窗 -->
+  <view class='net-close' wx:if='{{netWork}}'>
+    <view class='net-toast'>
+      <view class='net-toast-view'>上传出错啦!</view>
+      <text class='net-toast-text'>您的网络出现异常，请检查网络</text>
+      <view class='net-work-btn' bindtap='closeNetWorkTosat'>我知道了</view>
+    </view>
+  </view>
+</view>
+
+

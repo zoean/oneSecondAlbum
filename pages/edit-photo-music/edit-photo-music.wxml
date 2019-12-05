@@ -1,0 +1,27 @@
+<!--在wxml问件中调用js方法  -->
+<wxs module="timeFn" src="../../utils/timestampToTime.wxs"></wxs>
+
+<view class='edit-title-wrap'>
+  <!-- <view class='edit-title'>写标题</view> -->
+  <view class='edit-title' maxlength='30' disabled='true' placeholder="写标题">写标题 <view class='titleLimit'>{{titleLimit}}</view></view>
+  <view class="edit-input-wrap">
+    <form bindsubmit="bindFormSubmit">
+      <textarea bindinput='bindinput' maxlength='50' value='{{editTitle}}' placeholder="最多输入50字"></textarea>
+    </form>
+  </view>
+</view>
+<view class='edit-inner'>
+  <view class='edit-pic-num'>{{editnum}}/100</view>
+  <scroll-view scroll-y='true'>
+    <view class='edit-pic-list'>
+      <view wx:for="{{editPhotoPic}}" wx:for-item="item" wx:for-index="index" wx:key="key" class='edit-pic-item {{timeFn.addClass(index)}}'>
+         <image bindtap='editRemovePic' data-url='{{item}}' class='edit-remove-pic' src='../../images/remove.png'></image> 
+        <image class='edit-music-piclist' src='{{item}}'></image>
+      </view>   
+    </view>
+  </scroll-view>
+</view>
+<view class='edit-btn'>
+  <button bindtap='addpic' class='edit-add-pic'><image class='edit-add-pic-bg' src='../../images/addpic.png'></image> 添加照片</button>
+  <button  bindtap='savephoto' class='edit-save'>保存</button>
+</view>

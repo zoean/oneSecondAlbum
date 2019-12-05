@@ -1,0 +1,39 @@
+page{
+  width:100%;
+  height:100%;
+}
+.page-wrap{
+  width:100%;
+  height:auto;
+  position: absolute;
+  top:130rpx;
+}
+.text{
+  width:100%;
+  font-size: 18px;
+  color:#222;
+  text-align: center;
+}
+.load-btn{
+  width:280rpx;
+  height:80rpx;
+  text-align: center;
+  line-height:80rpx;
+  color:#fff;
+  font-size: 16px;
+  margin:0 auto;
+  background:#FF7A00;
+  border-radius: 44rpx;
+  margin-top:40rpx;
+}
+.load-btn::after{
+  border: none;
+}
+.img-wrap{
+  width:194rpx;
+  height:194rpx;
+  background:red;
+  margin:0 auto;
+  margin-top:164rpx;
+  margin-bottom:70rpx;
+}

@@ -1,0 +1,7 @@
+{
+  "disableSwipeBack": true,
+	"disableScroll":true,
+  "usingComponents": {
+    "nav-bar": "/components/navbar/navbar"
+  }
+}

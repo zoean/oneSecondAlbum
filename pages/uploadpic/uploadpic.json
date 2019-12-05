@@ -1,0 +1,13 @@
+{
+  "enablePullDownRefresh": false,
+  "onReachBottomDistance": 30,
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#fff",
+  "navigationBarTitleText": "上传照片",
+  "navigationBarTextStyle": "black",
+  "disableSwipeBack":true,
+	"disableScroll":true,
+  "usingComponents": {
+    "nav-bar": "/components/navbar/navbar"
+  }
+}

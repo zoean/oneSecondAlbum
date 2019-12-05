@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "pages/homePage/homepage",
+    "pages/uploadpic/uploadpic",
+    "pages/edit-album/edit-album",
+    "pages/share-album/share-album",
+    "components/navbar/navbar",
+    "pages/preview/preview"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "呱呱相册",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "globalData": {
+    "userInfo": null,
+    "height": 0
+  },
+  "debug": false
+}

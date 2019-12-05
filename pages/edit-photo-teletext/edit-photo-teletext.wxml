@@ -1,0 +1,31 @@
+<form>
+  <view class='set-title'>
+    <label>写标题</label>
+    <textarea maxlength='50' bindblur='setAlbumTitle' value='{{albumInfo.title}}' placeholder='点击这里添加标题最多50字'></textarea>
+  </view>
+  <view class='edit-photo-list'>
+      <view class='photo-count'>{{albumInfo.list.length}}/100</view>
+      <view class='edit-photo-wrap'>
+        <view class='edit-photo-item' wx:for="{{albumInfo.list}}" wx:for-item="photoItem" wx:key='id'>
+          <image wx:if='{{photoItem.resUrl}}' class='photo-view-img' src='{{photoItem.resUrl}}!editAlbum'></image>
+          <view class='txt-order-del'>
+            <text class='editPhotoDes' catchtap='editPhotoDes' data-photoId='{{photoItem.sortOrder}}'>{{photoItem.shortDes}}</text>
+            <!-- 上移moveUp、下移moveDown、删除delPhoto -->
+            <view class='photo-edit-bar'>
+              <image catchtap='moveUp' data-index='{{photoItem.sortOrder}}' data-sortOrder='{{photoItem.sortOrder}}' src='../../images/up.png'></image>
+              <image catchtap='moveDown' data-index='{{photoItem.sortOrder}}' data-sortOrder='{{photoItem.sortOrder}}' src='../../images/down.png'></image> 
+              <image catchtap='delPhoto' data-index='{{photoItem.sortOrder}}' data-sortOrder='{{photoItem.sortOrder}}' src='../../images/del.png'></image>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+  <view class='add-save'>
+    <view catchtap='addPhoto' class='add-img'>
+      <image src='../../images/add.png'></image>
+      <view>添加照片</view>
+    </view>
+    <button catchtap='saveAlbum' form-type='submit'>保存</button>
+  </view>
+</form>

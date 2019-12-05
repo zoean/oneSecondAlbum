@@ -1,0 +1,3 @@
+<!--pages/edit-photo-des/edit-photo-des.wxml-->
+<textarea maxlength='200' value='{{photoDes}}' bindblur='saveEditDes' bindinput='saveEditDes' placeholder='点击这里添加描述最多200字'></textarea>
+<!-- bindinput='setPhotoDes's -->

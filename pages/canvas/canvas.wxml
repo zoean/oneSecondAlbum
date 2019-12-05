@@ -1,0 +1,5 @@
+
+<view style='width:600rpx; height:944rpx;margin:0 auto;'>
+  <canvas style='width:600rpx; height:944rpx;' canvas-id='myCanvas'></canvas>
+</view>
+<button bindtap='canvasfn'>绘制海报</button>

@@ -1,0 +1,67 @@
+<!--pages/share-album/share-album.wxml-->
+<nav-bar title='{{navData.title}}' back='{{navData.back}}'></nav-bar>
+
+<view class='wrap'>
+  <view class='poster-modal-wrap' style='margin-top:{{barHeight + 94}}px;'>
+    <view class='album-preview' 
+    style='background-image:url({{albumInfo.coverImg}});'>
+      <canvas canvas-id='albumPreview'></canvas>
+      <!-- <image src='{{albumInfo.coverImg}}'></image> -->
+    </view>
+    <view class='poster-modal {{showPoster? "show-dom" : "hide-dom"}}'></view>
+    <view id='posterImg' style='top:{{barHeight + 94}}px;' class='{{showPoster? "show-dom" : "hide-dom"}}'>
+      <canvas canvas-id='posterImg'></canvas>
+      <view class='tips {{showClose ? "" : "hide-dom"}}'>
+        <!-- <image bindtap="closePoster" src='../../images/close.png'></image> -->
+        <text>海报已保存到您的系统相册</text>
+        <text>您可以从您的系统相册选择海报分享</text>
+      </view>
+    </view>
+
+    <!-- 分享按钮 -->
+    <view class='share-handle'>
+      <view class='share-firends'>
+        <button open-type='share'></button>
+        <image src='../../images/firends.png'></image>
+        <text>分享给好友/群</text>
+      </view>
+      <view class='share-firends-circle'>
+        
+        <!-- 已授权 -->
+        <button wx:if='{{isAuthorize}}' bindtap='shareFirendsCircle'></button> 
+        <!-- 未授权 -->        
+        <button wx:else open-type="openSetting" bindopensetting='handleSetting'></button>
+        <!-- -->
+        <image src='../../images/firends-circle.png'></image>
+        <text wx:if='{{isAuthorize}}'>分享海报</text>
+        <text wx:else>授权分享海报</text>
+      </view>
+    </view>
+  </view>
+  <!-- <view class='album-preview'>
+  <image src='../../images/album.png'></image>
+</view> -->
+  
+</view>
+
+<!-- 生成海报时进度弹框 -->
+<view class='mask' wx:if='{{maskShow}}'>
+  <view class='loading-box'>
+    <view wx:if='{{!iscomplete}}'>
+      <image class='loading-pic' src='../../images/loading.png'></image>
+      <view>正在生成海报</view>
+    </view>
+  </view>
+</view>
+
+<!-- 没有网络时显示页面 -->
+<view wx:if='{{reload}}' class='page-wrap'>
+  <view class='img-wrap'>
+    <image src='../../images/reload.png'></image>
+  </view>
+  <view class='text'>网络不给力，点击重新加载~</view>
+  <button class='load-btn' bindtap='reloadpage'>刷新试试</button>
+</view>
+
+
+<image src='{{albumInfo.coverImg}}' class='loadimg' bindload='imageLoad'></image>

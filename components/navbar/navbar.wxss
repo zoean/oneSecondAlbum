@@ -1,0 +1,22 @@
+.nav-wrap{
+  width:100%;
+  text-align: center;
+  position: fixed;
+  z-index: 99999;
+  top:0;
+  left:0;
+  font-weight: 600;
+  background:#fff;
+}
+.return-btn{
+  width:50px;
+  position: absolute;
+  text-align: center;
+  left: 0;
+}
+.return-btn image{
+  width:48rpx;
+  height:48rpx;
+  vertical-align: middle;
+  margin-top: -3px;
+}

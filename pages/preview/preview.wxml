@@ -1,0 +1,8 @@
+<web-view wx:if='{{!reload}}' bindmessage='getmessage' bindload='loadsuccess' binderror='loadfail' src="{{webViewUrl}}" ></web-view> 
+<view wx:if='{{reload}}' class='page-wrap'>
+  <view class='img-wrap'>
+    <image src='../../images/reload.png'></image>
+  </view>
+  <view class='text'>网络不给力，点击重新加载~</view>
+  <button class='load-btn' bindtap='reloadpage'>刷新试试</button>
+</view>

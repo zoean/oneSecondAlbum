@@ -1,0 +1,43 @@
+.page-wrap{
+  width:100%;
+  height:100%;
+  position: fixed;
+  background:#fff;
+  top:130rpx;
+  z-index: 1000;
+}
+.text{
+  width:100%;
+  font-size: 18px;
+  color:#222;
+  text-align: center;
+}
+.load-btn{
+  width:280rpx;
+  height:80rpx;
+  text-align: center;
+  line-height:80rpx;
+  color:#fff;
+  font-size: 16px;
+  margin:0 auto;
+  background:#FF7A00;
+  border-radius: 44rpx;
+  margin-top:40rpx;
+}
+.load-btn::after{
+  border: none;
+}
+.img-wrap{
+  width:280rpx;
+  height:280rpx;
+  margin:0 auto;
+  margin-top:164rpx;
+  margin-bottom:70rpx;
+}
+.img-wrap image{
+  width:100%;
+  height:100%;
+}
+.change-btn-bg{
+  background:#E16C00;
+}

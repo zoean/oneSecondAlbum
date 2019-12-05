@@ -1,0 +1,108 @@
+<!--在wxml文件中调用js方法  -->
+<wxs module="timeFn" src="../../utils/timestampToTime.wxs"></wxs>
+<nav-bar title='{{navData.title}}'></nav-bar>
+<!--首页数据显示  -->
+<view class='homepage-wrap' 
+  style='top:{{barHeight + 44}}px'>
+  <view class='noPhotoData' wx:if='{{homePageList.length == 0}}'>
+    <image class='homePage-pic' src='../../images/home.png'></image>
+    <view class='homepage-text'>快来创建属于自己的相册吧</view>
+    <button open-type="getUserInfo" bindgetuserinfo="getUserInfo" wx:if='{{!isAutuor}}'
+      bindlongtap='changeBg' bindtouchstart='changeBg' catchtouchend='changeBgEnd' 
+      class='homePage-creatbtn {{changeBg == true ? "change-btn-bg" : ""}}'>
+      上传照片
+    </button>
+		<button wx:if='{{isAutuor}}' bindtap='uploadimg'
+      bindlongtap='changeBg' bindtouchstart='changeBg' catchtouchend='changeBgEnd' 
+      class='homePage-creatbtn {{changeBg == true ? "change-btn-bg" : ""}}'>
+      上传照片
+    </button>
+  </view>
+	<view wx:if='{{homePageList.length > 0}}'>
+		<button open-type="getUserInfo" wx:if='{{!isAutuor}}'
+			bindgetuserinfo="getUserInfo" bindtouchstart='changeBgRight' catchtouchend='changeBgEndRight' 
+			class='havedata-btn'>
+				<image wx:if='{{changeBgRight}}' src='../../images/btn-creat.png'></image>
+		</button>
+		<button wx:if='{{isAutuor}}'
+			bindtap="chooseImg" bindtouchstart='changeBgRight' catchtouchend='changeBgEndRight' 
+			class='havedata-btn'>
+				<image wx:if='{{changeBgRight}}' src='../../images/btn-creat.png'></image>
+		</button>
+	</view>
+  <view wx:if='{{homePageList.length > 0}}' class='person-data'>
+    <!-- <view>{{haah}}</view> -->
+    <view class='photo-list' 
+      wx:for="{{homePageList}}" wx:for-item="item" wx:for-index="index" 
+      wx:key="key" style='{{index == 0 ? "margin-top:0;" : ""}}'>
+      <!-- <view class='photo-type {{item.postType == 0 ? "" : "photo-type-music"}}'>{{item.postType == 0 ? "图文相册" : "音乐相册"}}</view> -->
+      <view decode="{{true}}" 
+        data-photoid='{{item.id}}' bindtap='previewPhoto' data-templateId='{{item.templateId}}'
+        class='photo-name'>{{item.title}}</view>
+      <view class='photo-time' data-photoid='{{item.id}}' bindtap='previewPhoto' data-templateId='{{item.templateId}}'>{{timeFn.timestampToTime(item.createTime)}}</view>
+      <view style='photo-pic-wrap' >
+        <view data-photoid='{{item.id}}' bindtap='previewPhoto' data-templateId='{{item.templateId}}' class='photo-pic' 
+        style='background:url({{item.coverImg}}!homePage) no-repeat center;background-size:100% auto;' wx:if='{{homePageList.length > 0}}'>
+        </view>
+        <!-- <image data-photoid='{{item.id}}' bindtap='previewPhoto'  class='photo-pic' src='{{item.coverImg}}'></image> -->
+      </view>
+      <view class='photo-btn-list'>
+        <view class='redact' bindtap='redactPhoto' data-type='{{item.postType}}' 
+        data-templateId='{{item.templateId}}' data-index='{{index}}' data-photoid='{{item.id}}'>
+          <image src='../../images/btn-redict.png'></image>
+          <text>编辑</text>
+        </view>
+        <view class='remove' bindtap='removePhoto' data-photoid='{{item.id}}' data-index='{{index}}'>
+          <image src='../../images/btn-remove.png'></image>
+          <text>删除</text>
+        </view>
+        <view class='share' bindtap='sharePhoto' data-title='{{item.title}}'data-templateId='{{item.templateId}}' data-photoid='{{item.id}}'>
+          <image src='../../images/btn-share.png'></image>
+          <text>分享</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 删除相册弹窗-->
+<view id='bottom-shadow' class='{{removePhoto ? "remove-shadow" : "remove-shadow-hide"}}'>
+  <view id='remove-photo'>
+    <view class='remove-text1'>删除相册</view>
+    <view class='remove-text2'>确定删除此相册吗?</view>
+    <view class='remove-btn-view'>
+      <view class='remove-cancel' bindtap='cancelRemove'>取消</view>
+      <view class='remove-sure' bindtap='sureRemove'>确定</view>
+    </view>
+  </view>
+</view> 
+
+
+<!--上传图片进度弹框  -->
+<!-- <view class='processWrap' id='{{uploadshow == 1 ? "uploadshow" : "uploadhide"}}'>
+  <view class='process'>
+    <text class='process-text'>正在上传中<text class='uploadtext'>{{successnum}}/{{tempFilePathsLength}}</text></text> 
+    <image animation="{{animationData}}" class='upLoadImg' src='../../images/upLoadImg.png'></image>
+    <text class='process-max'>可以添加100张图片哦</text>
+  </view>
+</view> -->
+
+<!--删除相册进度弹框 -->
+<view class='remove-photo-wrap' wx:if='{{isremove}}'>
+  <view class='loading-box'>
+    <image class='{{loadClass}}' src='{{loadurl}}'></image>
+    <view>{{loadtext}}</view>
+  </view>
+</view>
+
+
+<!-- 加载不成功显示界面 -->
+<view wx:if='{{reload}}' class='page-wrap'>
+  <view class='img-wrap'>
+    <image src='../../images/reload.png'></image>
+  </view>
+  <view class='text'>网络不给力，点击重新加载~</view>
+  <button class='load-btn' bindtap='reloadpage'>刷新试试</button>
+</view>
+
+
